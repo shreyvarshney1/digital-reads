@@ -1,6 +1,4 @@
-import { redirect } from 'next/navigation';
-
-import prisma from '@/lib/prisma';
+import React from 'react';
 
 export default async function SetupLayout({
   children,

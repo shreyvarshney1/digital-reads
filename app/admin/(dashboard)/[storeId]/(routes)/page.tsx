@@ -1,3 +1,5 @@
+import React from 'react';
+
 import { formatter } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 

@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import React from 'react';
 
 import prisma from '@/lib/prisma';
 import Navbar from '@/components/navbar';

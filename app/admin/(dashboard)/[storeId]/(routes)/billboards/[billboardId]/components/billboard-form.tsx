@@ -1,26 +1,27 @@
-'use client';
+"use client";
+import React from "react";
 
 //axios
-import axios from 'axios';
+import axios from "axios";
 
 //hooks
-import { useForm } from 'react-hook-form';
-import { useState } from 'react';
-import { toast } from 'react-hot-toast';
-import { useParams, useRouter } from 'next/navigation';
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
+import { useParams, useRouter } from "next/navigation";
 
 //library imports
-import * as z from 'zod';
-import { Billboard } from '@prisma/client';
-import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from "zod";
+import { Billboard } from "@prisma/client";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 //library components
-import { Trash } from 'lucide-react';
+import { Trash } from "lucide-react";
 
 //ui components
-import { Heading } from '@/components/ui/heading';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+import { Heading } from "@/components/ui/heading";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   Form,
   FormControl,
@@ -28,10 +29,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { AlertModal } from '@/components/modals/alert-modal';
-import ImageUpload from '@/components/ui/image-upload';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { AlertModal } from "@/components/modals/alert-modal";
+import ImageUpload from "@/components/ui/image-upload";
 
 const formSchema = z.object({
   label: z.string().min(1),
@@ -53,16 +54,16 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? 'Edit Billboard' : 'Create Billboard';
-  const description = initialData ? 'Edit a billboard' : 'Add a new billboard';
-  const toastMessage = initialData ? 'Billboard updated' : 'Billboard created';
-  const action = initialData ? 'Save changes' : 'Create';
+  const title = initialData ? "Edit Billboard" : "Create Billboard";
+  const description = initialData ? "Edit a billboard" : "Add a new billboard";
+  const toastMessage = initialData ? "Billboard updated" : "Billboard created";
+  const action = initialData ? "Save changes" : "Create";
 
   const form = useForm<BillboardFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData || {
-      label: '',
-      imageUrl: '',
+      label: "",
+      imageUrl: "",
     },
   });
 
@@ -81,7 +82,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
       router.push(`/${params.storeId}/billboards`);
       toast.success(toastMessage);
     } catch (error) {
-      toast.error('Something went wrong.');
+      toast.error("Something went wrong.");
     } finally {
       setLoading(false);
     }
@@ -95,10 +96,10 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
       );
       router.refresh();
       router.push(`/${params.storeId}/billboards`);
-      toast.success('Billboard deleted.');
+      toast.success("Billboard deleted.");
     } catch (error) {
       toast.error(
-        'Make sure you removed all categories using this billboard first.'
+        "Make sure you removed all categories using this billboard first."
       );
     } finally {
       setLoading(false);
@@ -114,18 +115,18 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
         onConfirm={onDelete}
         loading={loading}
       />
-      <div className='flex items-center justify-between'>
+      <div className="flex items-center justify-between">
         <Heading title={title} description={description} />
         {initialData && (
           <Button
             disabled={loading}
-            variant='destructive'
-            size='sm'
+            variant="destructive"
+            size="sm"
             onClick={() => {
               setOpen(true);
             }}
           >
-            <Trash className='h-4 w-4' />
+            <Trash className="h-4 w-4" />
           </Button>
         )}
       </div>
@@ -133,11 +134,11 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className='space-y-8 w-full'
+          className="space-y-8 w-full"
         >
           <FormField
             control={form.control}
-            name='imageUrl'
+            name="imageUrl"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Background image</FormLabel>
@@ -145,25 +146,25 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
                   <ImageUpload
                     value={field.value ? [field.value] : []}
                     disabled={loading}
-                    onChange={(url) => field.onChange(url)}
-                    onRemove={() => field.onChange('')}
+                    onChange={(url: string) => field.onChange(url)}
+                    onRemove={() => field.onChange("")}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <div className='grid grid-cols-3 gap-8'>
+          <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}
-              name='label'
+              name="label"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Label</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder='Billboard label'
+                      placeholder="Billboard label"
                       {...field}
                     />
                   </FormControl>
@@ -172,7 +173,7 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
               )}
             />
           </div>
-          <Button disabled={loading} className='ml-auto' type='submit'>
+          <Button disabled={loading} className="ml-auto" type="submit">
             {action}
           </Button>
         </form>

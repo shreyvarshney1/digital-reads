@@ -1,8 +1,3 @@
-import prisma from '@/lib/prisma';
-
-import { redirect } from 'next/navigation';
-
-import StoreSwitcher from '@/components/store-switcher';
 import { MainNav } from '@/components/main-nav';
 import { ThemeToggle } from './theme-toggle';
 

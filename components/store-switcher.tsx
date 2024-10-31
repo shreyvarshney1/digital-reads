@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 
 //database call
 import { Store } from '@prisma/client';

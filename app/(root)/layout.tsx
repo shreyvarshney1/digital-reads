@@ -1,12 +1,11 @@
+import React from "react";
 import Footer from "@/components/shared/footer";
 import Header from "@/components/shared/header";
 import { Metadata } from "next";
-import React from "react";
 
 // Define a type for the props
 type RootLayoutProps = {
   children: React.ReactNode;
-  modal?: React.ReactNode; // Make modal optional if it's not always present
 };
 
 export const metadata: Metadata = {

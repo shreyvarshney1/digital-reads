@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 
 import { useEffect, useState } from 'react';
 
@@ -10,8 +11,8 @@ import { ImagePlus, Trash } from 'lucide-react';
 
 interface ImageUploadProps {
   disabled?: boolean;
-  onChange: (value: string) => void;
-  onRemove: (value: string) => void;
+  onChange: Function;
+  onRemove: Function;
   value: string[];
 }
 
@@ -57,7 +58,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
           </div>
         ))}
       </div>
-      <CldUploadWidget onUpload={onUpload} uploadPreset='uhr3j3hg'>
+      <CldUploadWidget onSuccess={onUpload} uploadPreset='uhr3j3hg'>
         {({ open }) => {
           const onClick = () => {
             open();

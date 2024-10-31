@@ -1,4 +1,5 @@
 'use client';
+import React from 'react';
 
 //axios
 import axios from 'axios';
@@ -175,10 +176,10 @@ export const BookForm: React.FC<BookFormProps> = ({
                   <ImageUpload
                     value={field.value.map((image) => image.url)}
                     disabled={loading}
-                    onChange={(url) =>
+                    onChange={(url: string) =>
                       field.onChange([...field.value, { url }])
                     }
-                    onRemove={(url) =>
+                    onRemove={(url: string) =>
                       field.onChange([
                         ...field.value.filter((current) => current.url !== url),
                       ])

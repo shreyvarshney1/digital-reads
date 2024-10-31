@@ -37,7 +37,7 @@ export const columns: ColumnDef<BookColumn>[] = [
   },
   {
     accessorKey: 'author',
-    header: 'Size',
+    header: 'Author',
   },
   {
     accessorKey: 'createdAt',
