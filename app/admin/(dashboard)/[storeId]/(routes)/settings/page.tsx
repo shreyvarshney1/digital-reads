@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import prisma from '@/lib/prisma';
 
 import { SettingsForm } from './components/settings-form';
+import { auth, signIn } from '@/auth';
 
 interface SettingPageProps {
   params: {
@@ -12,16 +13,17 @@ interface SettingPageProps {
 }
 
 const SettingsPage: React.FC<SettingPageProps> = async ({ params }) => {
-  // const { userId } = auth();
+  const session = await auth();
+  const userId = session?.user?.id;
 
-  // if (!userId) {
-  //   redirect('/sign-in');
-  // }
+  if (!userId) {
+    signIn("google");
+  }
 
   const store = await prisma.store.findFirst({
     where: {
       id: params.storeId,
-      // userId,
+      userId,
     },
   });
 

@@ -5,17 +5,17 @@ import { AuthorForm } from './components/author-form';
 const AuthorPage = async ({
   params,
 }: {
-  params: { sizeId: string };
+  params: { authorId: string };
 }) => {
-  const size = await prisma.author.findUnique({
+  const author = await prisma.author.findUnique({
     where: {
-      id: params.sizeId,
+      id: params.authorId,
     },
   });
   return (
     <div className='flex-col'>
       <div className='flex-1 space-y-4 p-8 pt-6'>
-        <AuthorForm initialData={size} />
+        <AuthorForm initialData={author} />
       </div>
     </div>
   );

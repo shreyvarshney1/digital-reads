@@ -1,17 +1,23 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { auth } from '@/auth';
 
 export async function POST(req: Request) {
   try {
-    // const { userId } = auth();
-    const userId = '1';
+    const session = await auth();
+    const userId = session?.user?.id;
+    const role = session?.user?.role;
     const body = await req.json();
 
     const { name } = body;
 
-    // if (!userId) {
-    //   return new NextResponse('Unauthorized', { status: 401 });
-    // }
+    if (!userId) {
+      return new NextResponse('Unauthorized', { status: 401 });
+    }
+
+    if (role !== "admin") {
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
 
     if (!name) {
       return new NextResponse('Name is required', { status: 400 });

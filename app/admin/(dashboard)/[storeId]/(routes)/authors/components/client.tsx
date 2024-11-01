@@ -22,10 +22,10 @@ export const AuthorsClient: React.FC<AuthorsClientProps> = ({ data }) => {
       <div className='flex items-center justify-between'>
         <Heading
           title={`Authors (${data.length})`}
-          description='Manage sizes for your store'
+          description='Manage authors for your store'
         />
         <Button
-          onClick={() => router.push(`/${params.storeId}/sizes/new`)}
+          onClick={() => router.push(`/admin/${params.storeId}/authors/new`)}
         >
           <Plus className='mr-2 h-4 w-4' />
           Add new
@@ -33,9 +33,9 @@ export const AuthorsClient: React.FC<AuthorsClientProps> = ({ data }) => {
       </div>
       <Separator />
       <DataTable searchKey='name' columns={columns} data={data} />
-      <Heading title='API' description='API calls for sizes' />
+      <Heading title='API' description='API calls for authors' />
       <Separator />
-      <ApiList entityName='sizes' entityIdName='sizeId'/>
+      <ApiList entityName='authors' entityIdName='authorId'/>
     </>
   );
 };

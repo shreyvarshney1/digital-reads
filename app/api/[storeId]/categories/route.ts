@@ -1,19 +1,21 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { auth } from '@/auth';
 
 export async function POST(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
   try {
-    // const { userId } = auth();
+    const session = await auth();
+    const userId = session?.user?.id;
     const body = await req.json();
 
     const { name, billboardId } = body;
 
-    // if (!userId) {
-    //   return new NextResponse('Unauthenticated', { status: 401 });
-    // }
+    if (!userId) {
+      return new NextResponse('Unauthenticated', { status: 401 });
+    }
 
     if (!name) {
       return new NextResponse('Name is required', { status: 400 });
@@ -30,7 +32,7 @@ export async function POST(
     const storeByUserId = await prisma.store.findFirst({
       where: {
         id: params.storeId,
-        // userId,
+        userId,
       },
     });
 

@@ -1,12 +1,15 @@
-import prisma from '@/lib/prisma';
-import { NextResponse } from 'next/server';
+import { auth } from "@/auth";
+import prisma from "@/lib/prisma";
+import { NextResponse } from "next/server";
 
 export async function PATCH(
   req: Request,
   { params }: { params: { storeId: string; bookId: string } }
 ) {
   try {
-    // const { userId } = auth();
+    const session = await auth();
+    const userId = session?.user?.id;
+    const role = session?.user?.role;
     const body = await req.json();
 
     const {
@@ -20,47 +23,51 @@ export async function PATCH(
       isArchived,
     } = body;
 
-    // if (!userId) {
-    //   return new NextResponse('Unauthenticated', { status: 401 });
-    // }
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+
+    if (role !== "admin") {
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
 
     if (!name) {
-      return new NextResponse('Name is required', { status: 400 });
+      return new NextResponse("Name is required", { status: 400 });
     }
 
     if (!images || !images.length) {
-      return new NextResponse('Images are required', { status: 400 });
+      return new NextResponse("Images are required", { status: 400 });
     }
 
     if (!price) {
-      return new NextResponse('Price is required', { status: 400 });
+      return new NextResponse("Price is required", { status: 400 });
     }
 
     if (!categoryId) {
-      return new NextResponse('Category ID is required', { status: 400 });
+      return new NextResponse("Category ID is required", { status: 400 });
     }
 
     if (!colorId) {
-      return new NextResponse('Color ID is required', { status: 400 });
+      return new NextResponse("Color ID is required", { status: 400 });
     }
 
     if (!authorId) {
-      return new NextResponse('Author ID is required', { status: 400 });
+      return new NextResponse("Author ID is required", { status: 400 });
     }
 
     if (!params.bookId) {
-      return new NextResponse('Book ID is required', { status: 400 });
+      return new NextResponse("Book ID is required", { status: 400 });
     }
 
     const storeByUserId = await prisma.store.findFirst({
       where: {
         id: params.storeId,
-        // userId,
+        userId,
       },
     });
 
     if (!storeByUserId) {
-      return new NextResponse('Unauthorized', { status: 403 });
+      return new NextResponse("Unauthorized", { status: 403 });
     }
 
     await prisma.book.update({
@@ -95,8 +102,8 @@ export async function PATCH(
 
     return NextResponse.json(book);
   } catch (error) {
-    console.log('[PRODUCT_PATCH]', error);
-    return new NextResponse('Internal Error', { status: 500 });
+    console.log("[PRODUCT_PATCH]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }
 
@@ -105,25 +112,31 @@ export async function DELETE(
   { params }: { params: { storeId: string; bookId: string } }
 ) {
   try {
-    // const { userId } = auth();
+    const session = await auth();
+    const userId = session?.user?.id;
+    const role = session?.user?.role;
 
-    // if (!userId) {
-    //   return new NextResponse('Unauthenticated', { status: 401 });
-    // }
+    if (!userId) {
+      return new NextResponse("Unauthenticated", { status: 401 });
+    }
+
+    if (role !== "admin") {
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
 
     if (!params.bookId) {
-      return new NextResponse('Book ID is required', { status: 400 });
+      return new NextResponse("Book ID is required", { status: 400 });
     }
 
     const storeByUserId = await prisma.store.findFirst({
       where: {
         id: params.storeId,
-        // userId,
+        userId,
       },
     });
 
     if (!storeByUserId) {
-      return new NextResponse('Unauthorized', { status: 403 });
+      return new NextResponse("Unauthorized", { status: 403 });
     }
 
     const book = await prisma.book.deleteMany({
@@ -134,8 +147,8 @@ export async function DELETE(
 
     return NextResponse.json(book);
   } catch (error) {
-    console.log('[PRODUCT_DELETE]', error);
-    return new NextResponse('Internal Error', { status: 500 });
+    console.log("[PRODUCT_DELETE]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }
 
@@ -145,7 +158,7 @@ export async function GET(
 ) {
   try {
     if (!params.bookId) {
-      return new NextResponse('Billboard ID is required', { status: 400 });
+      return new NextResponse("Billboard ID is required", { status: 400 });
     }
 
     const book = await prisma.book.findUnique({
@@ -161,7 +174,7 @@ export async function GET(
 
     return NextResponse.json(book);
   } catch (error) {
-    console.log('[PRODUCT_GET]', error);
-    return new NextResponse('Internal Error', { status: 500 });
+    console.log("[PRODUCT_GET]", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

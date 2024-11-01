@@ -37,11 +37,11 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.storeId}/sizes/${data.id}`);
+      await axios.delete(`/api/${params.storeId}/authors/${data.id}`);
       router.refresh();
       toast.success('Author deleted.');
     } catch (error) {
-      toast.error('Make sure you removed all books using this size first.');
+      toast.error('Make sure you removed all books using this author first.');
     } finally {
       setLoading(false);
       setOpen(false);
@@ -70,7 +70,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
             Copy Id
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() => router.push(`/${params.storeId}/sizes/${data.id}`)}
+            onClick={() => router.push(`/admin/${params.storeId}/authors/${data.id}`)}
           >
             <Edit className='mr-2 h-4 w-4' />
             Update

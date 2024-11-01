@@ -1,3 +1,6 @@
+import { auth, signIn } from '@/auth';
+import prisma from '@/lib/prisma';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
 export default async function SetupLayout({
@@ -5,21 +8,22 @@ export default async function SetupLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // const { userId } = auth();
+  const session = await auth();
+  const userId = session?.user?.id;
 
-  // if (!userId) {
-  //   redirect('/sign-in');
-  // }
+  if (!userId) {
+    signIn("google");
+  }
 
-  // const store = await prisma.store.findFirst({
-  //   where: {
-  //     userId: userId,
-  //   },
-  // });
+  const store = await prisma.store.findFirst({
+    where: {
+      userId: userId,
+    },
+  });
 
-  // if (store) {
-  //   redirect(`/${store.id}`);
-  // }
+  if (store) {
+    redirect(`/admin/${store.id}`);
+  }
 
   return <>{children}</>;
 }

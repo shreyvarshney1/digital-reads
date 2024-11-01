@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
@@ -6,14 +7,20 @@ export async function PATCH(
   { params }: { params: { storeId: string; authorId: string } }
 ) {
   try {
-    // const { userId } = auth();
+    const session = await auth();
+    const userId = session?.user?.id;
+    const role = session?.user?.role;
     const body = await req.json();
 
     const { name } = body;
 
-    // if (!userId) {
-    //   return new NextResponse('Unauthenticated', { status: 401 });
-    // }
+    if (!userId) {
+      return new NextResponse('Unauthenticated', { status: 401 });
+    }
+
+    if (role !== "admin") {
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
 
     if (!name) {
       return new NextResponse('Name is required', { status: 400 });
@@ -25,7 +32,7 @@ export async function PATCH(
     const storeByUserId = await prisma.store.findFirst({
       where: {
         id: params.storeId,
-        // userId,
+        userId,
       },
     });
 
@@ -54,11 +61,12 @@ export async function DELETE(
   { params }: { params: { storeId: string; authorId: string } }
 ) {
   try {
-    // const { userId } = auth();
+    const session = await auth();
+    const userId = session?.user?.id;
 
-    // if (!userId) {
-    //   return new NextResponse('Unauthenticated', { status: 401 });
-    // }
+    if (!userId) {
+      return new NextResponse('Unauthenticated', { status: 401 });
+    }
 
     if (!params.authorId) {
       return new NextResponse('Author ID is required', { status: 400 });
@@ -67,7 +75,7 @@ export async function DELETE(
     const storeByUserId = await prisma.store.findFirst({
       where: {
         id: params.storeId,
-        // userId,
+        userId,
       },
     });
 

@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
@@ -6,14 +7,21 @@ export async function PATCH(
   { params }: { params: { storeId: string } }
 ) {
   try {
-    // const { userId } = auth();
+    const session = await auth();
+    const userId = session?.user?.id;
+    const role = session?.user?.role;
+  
     const body = await req.json();
 
     const { name } = body;
 
-    // if (!userId) {
-    //   return new NextResponse('Unauthenticated', { status: 401 });
-    // }
+    if (!userId) {
+      return new NextResponse('Unauthenticated', { status: 401 });
+    }
+
+    if (role !== "admin") {
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
 
     if (!name) {
       return new NextResponse('Name is required', { status: 400 });
@@ -26,7 +34,7 @@ export async function PATCH(
     const store = await prisma.store.updateMany({
       where: {
         id: params.storeId,
-        // userId,
+        userId,
       },
       data: {
         name,
@@ -45,11 +53,17 @@ export async function DELETE(
   { params }: { params: { storeId: string } }
 ) {
   try {
-    // const { userId } = auth();
+    const session = await auth();
+    const userId = session?.user?.id;
+    const role = session?.user?.role;
 
-    // if (!userId) {
-    //   return new NextResponse('Unauthenticated', { status: 401 });
-    // }
+    if (!userId) {
+      return new NextResponse('Unauthenticated', { status: 401 });
+    }
+
+    if (role !== "admin") {
+      return new NextResponse("Unauthorized", { status: 403 });
+    }
 
     if (!params.storeId) {
       return new NextResponse('StoreId is required', { status: 400 });
@@ -58,7 +72,7 @@ export async function DELETE(
     const store = await prisma.store.deleteMany({
       where: {
         id: params.storeId,
-        // userId,
+        userId,
       },
     });
 

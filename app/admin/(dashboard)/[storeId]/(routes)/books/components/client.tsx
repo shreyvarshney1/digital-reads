@@ -25,7 +25,7 @@ export const BookClient: React.FC<BookClientProps> = ({ data }) => {
           title={`Books (${data.length})`}
           description='Manage books for your store'
         />
-        <Button onClick={() => router.push(`/${params.storeId}/books/new`)}>
+        <Button onClick={() => router.push(`/admin/${params.storeId}/books/new`)}>
           <Plus className='mr-2 h-4 w-4' />
           Add new
         </Button>

@@ -113,7 +113,7 @@ export const BookForm: React.FC<BookFormProps> = ({
         await axios.post(`/api/${params.storeId}/books`, data);
       }
       router.refresh();
-      router.push(`/${params.storeId}/books`);
+      router.push(`/admin/${params.storeId}/books`);
       toast.success(toastMessage);
     } catch (error) {
       toast.error('Something went wrong.');
@@ -127,7 +127,7 @@ export const BookForm: React.FC<BookFormProps> = ({
       setLoading(true);
       await axios.delete(`/api/${params.storeId}/books/${params.bookId}`);
       router.refresh();
-      router.push(`/${params.storeId}/books`);
+      router.push(`/admin/${params.storeId}/books`);
       toast.success('Book deleted.');
     } catch (error) {
       toast.error('Something went wrong.');
@@ -285,31 +285,6 @@ export const BookForm: React.FC<BookFormProps> = ({
                         </SelectItem>
                       ))}
                     </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='colorId'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Color</FormLabel>
-                  <Select
-                    disabled={loading}
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value}
-                          placeholder='Select a color'
-                        />
-                      </SelectTrigger>
-                    </FormControl>
                   </Select>
                   <FormMessage />
                 </FormItem>

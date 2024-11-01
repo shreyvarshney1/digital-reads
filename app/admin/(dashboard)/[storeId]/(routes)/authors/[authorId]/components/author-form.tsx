@@ -52,7 +52,7 @@ export const AuthorForm: React.FC<AuthorFormProps> = ({ initialData }) => {
   const [loading, setLoading] = useState(false);
 
   const title = initialData ? 'Edit Author' : 'Create Author';
-  const description = initialData ? 'Edit a size' : 'Add a new size';
+  const description = initialData ? 'Edit a author' : 'Add a new author';
   const toastMessage = initialData ? 'Author updated' : 'Author created';
   const action = initialData ? 'Save changes' : 'Create';
 
@@ -69,14 +69,14 @@ export const AuthorForm: React.FC<AuthorFormProps> = ({ initialData }) => {
       setLoading(true);
       if (initialData) {
         await axios.patch(
-          `/api/${params.storeId}/sizes/${params.sizeId}`,
+          `/api/${params.storeId}/authors/${params.authorId}`,
           data
         );
       } else {
-        await axios.post(`/api/${params.storeId}/sizes`, data);
+        await axios.post(`/api/${params.storeId}/authors`, data);
       }
       router.refresh();
-      router.push(`/${params.storeId}/sizes`);
+      router.push(`/admin/${params.storeId}/authors`);
       toast.success(toastMessage);
     } catch (error) {
       toast.error('Something went wrong.');
@@ -89,14 +89,14 @@ export const AuthorForm: React.FC<AuthorFormProps> = ({ initialData }) => {
     try {
       setLoading(true);
       await axios.delete(
-        `/api/${params.storeId}/sizes/${params.sizeId}`
+        `/api/${params.storeId}/authors/${params.authorId}`
       );
       router.refresh();
-      router.push(`/${params.storeId}/sizes`);
+      router.push(`/admin/${params.storeId}/authors`);
       toast.success('Author deleted.');
     } catch (error) {
       toast.error(
-        'Make sure you removed all books using this size first.'
+        'Make sure you removed all books using this author first.'
       );
     } finally {
       setLoading(false);
@@ -144,23 +144,6 @@ export const AuthorForm: React.FC<AuthorFormProps> = ({ initialData }) => {
                     <Input
                       disabled={loading}
                       placeholder='Author name'
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='value'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Value</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={loading}
-                      placeholder='Author value'
                       {...field}
                     />
                   </FormControl>
