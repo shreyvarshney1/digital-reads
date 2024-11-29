@@ -22,7 +22,7 @@ const Header = async () => {
         </div>
         <div className="space-x-2 flex">
           <Button asChild variant="ghost">
-            <Link href="/cart">
+            <Link href="/">
               <ShoppingCart />
               Cart
             </Link>
