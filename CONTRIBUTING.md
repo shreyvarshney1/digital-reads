@@ -1,7 +1,3 @@
-Here's a **CONTRIBUTING.md** for your **Digital Reads** project:  
-
----
-
 # 🚀 Contributing to **Digital Reads**  
 
 Thank you for considering contributing to **Digital Reads**! 🎉 Your contributions help make this project better for book lovers around the world.  
