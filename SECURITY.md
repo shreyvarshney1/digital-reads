@@ -20,4 +20,4 @@ We appreciate responsible disclosure of vulnerabilities to ensure the security o
 - Report any suspicious behavior or unexpected issues immediately.  
 
 ---  
-Thank you for helping us keep Kushiro secure!  
+Thank you for helping us keep DigitalReads secure!  
